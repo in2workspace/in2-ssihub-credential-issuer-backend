@@ -1,2 +1,1 @@
-# in2-ssihub-issuer-backend
-Credential Issuer Backend
+<h1>Credential Issuer Backend</h1>
