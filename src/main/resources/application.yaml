@@ -1,1 +1,6 @@
-spring.application.name=issuer.backend
+spring:
+  application:
+    name: credential-issuer-backend
+
+server:
+  port: 8080
