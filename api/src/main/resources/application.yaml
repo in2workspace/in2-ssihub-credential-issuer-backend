@@ -4,3 +4,7 @@ spring:
 
 server:
   port: 8080
+
+oid4vci:
+  credential-issuer: "https://issuer-dev.in2.ssihub.org"
+  authorization-server: "https://issuer-dev.in2.ssihub.org"
