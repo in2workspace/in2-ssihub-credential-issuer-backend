@@ -408,3 +408,7 @@ Error: Falta Authorization:
 - Manejo de reintentos en caso de error temporal del emisor.
 
 
+# Referencias
+- https://docs.google.com/document/d/1t9uokraHwVa3q-Rv76wu6nGB_F_um7YEb7MqdrJZZhA/edit?tab=t.0
+- https://chatgpt.com/c/67aa7221-69d4-800f-8a1c-afd1e9a9dbe8
+- 
