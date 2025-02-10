@@ -13,19 +13,18 @@ java {
 	}
 }
 
+bootJar {
+	mainClass = 'es.in2.Application'
+}
+
 repositories {
 	mavenCentral()
 }
 
 dependencies {
-	// Spring Boot Context
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	// Modules
+	implementation project(':api')
 	implementation project(':credential-management')
 	implementation project(':oid4vci')
-	// Testing
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 subprojects {
