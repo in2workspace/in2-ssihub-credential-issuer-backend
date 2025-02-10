@@ -1,8 +1,8 @@
 package es.in2.oid4vci.infrastructure.controller;
 
 import es.in2.oid4vci.domain.dto.CredentialRequest;
-import es.in2.oid4vci.domain.dto.CredentialErrorResponse;
 import es.in2.oid4vci.domain.dto.CredentialResponse;
+import es.in2.oid4vci.domain.exception.CredentialErrorResponse;
 import es.in2.oid4vci.domain.services.CredentialService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.CacheControl;
@@ -18,7 +18,7 @@ public class CredentialController {
     private final CredentialService credentialService;
 
     @PostMapping
-    public ResponseEntity<CredentialResponse> requestCredential(@RequestBody CredentialRequest credentialRequest,
+    public ResponseEntity<?> requestCredential(@RequestBody CredentialRequest credentialRequest,
                                                @RequestHeader("Authorization") String authorizationHeader) {
         try {
             if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {

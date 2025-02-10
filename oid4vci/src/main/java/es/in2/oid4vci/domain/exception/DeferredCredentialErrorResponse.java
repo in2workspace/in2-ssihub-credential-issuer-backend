@@ -1,4 +1,4 @@
-package es.in2.oid4vci.domain.dto;
+package es.in2.oid4vci.domain.exception;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

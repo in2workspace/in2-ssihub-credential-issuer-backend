@@ -1,7 +1,7 @@
 package es.in2.oid4vci.infrastructure.controller;
 
 import es.in2.oid4vci.domain.dto.NotificationRequest;
-import es.in2.oid4vci.domain.dto.NotificationErrorResponse;
+import es.in2.oid4vci.domain.exception.NotificationErrorResponse;
 import es.in2.oid4vci.domain.services.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

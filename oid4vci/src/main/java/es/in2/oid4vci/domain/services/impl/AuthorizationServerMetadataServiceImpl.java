@@ -15,13 +15,14 @@ public class AuthorizationServerMetadataServiceImpl implements AuthorizationServ
 
     @Override
     public AuthorizationServerMetadata getMetadata() {
+        // fixme: debería usar builder
         return new AuthorizationServerMetadata(
                 authorizationServer,
                 authorizationServer + "/oauth2/authorize",
                 authorizationServer + "/oauth2/token",
                 authorizationServer + "/.well-known/jwks.json",
-                List.of("authorization_code", "urn:ietf:params:oauth:grant-type:pre-authorized_code"),
-                List.of("code"),
+                List.of("urn:ietf:params:oauth:grant-type:pre-authorized_code"),
+                null,
                 true // Indica que se admite solicitud de token sin client_id en el flujo Pre-Authorized
         );
     }

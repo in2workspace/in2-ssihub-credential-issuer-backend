@@ -2,7 +2,6 @@ package es.in2.oid4vci.domain.services.impl;
 
 import es.in2.oid4vci.domain.dto.CredentialRequest;
 import es.in2.oid4vci.domain.dto.CredentialResponse;
-import es.in2.oid4vci.domain.dto.CredentialImmediateResponse;
 import es.in2.oid4vci.domain.services.CredentialService;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +26,8 @@ public class CredentialServiceImpl implements CredentialService {
         String credentialJwt = UUID.randomUUID().toString();
 
         // No se usa transaction_id porque se emite de inmediato
-        return CredentialImmediateResponse.builder()
-                .credentials(List.of(CredentialImmediateResponse.Credential.builder()
+        return CredentialResponse.builder()
+                .credentials(List.of(CredentialResponse.Credential.builder()
                         .credential(credentialJwt)
                         .build()))
                 .build();

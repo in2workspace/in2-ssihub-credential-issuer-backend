@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public record DeferredCredentialResponse(
-        @JsonProperty("credentials") List<CredentialImmediateResponse.Credential> credentials,
+        @JsonProperty("credentials") List<CredentialResponse.Credential> credentials,
         @JsonProperty("notification_id") String notificationId
 ) {
 }

@@ -2,7 +2,7 @@ package es.in2.oid4vci.infrastructure.controller;
 
 import es.in2.oid4vci.domain.dto.DeferredCredentialRequest;
 import es.in2.oid4vci.domain.dto.DeferredCredentialResponse;
-import es.in2.oid4vci.domain.dto.DeferredCredentialErrorResponse;
+import es.in2.oid4vci.domain.exception.DeferredCredentialErrorResponse;
 import es.in2.oid4vci.domain.services.DeferredCredentialService;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
 package es.in2.oid4vci.domain.services.impl;
 
-import es.in2.oid4vci.domain.dto.CredentialImmediateResponse;
+import es.in2.oid4vci.domain.dto.CredentialResponse;
 import es.in2.oid4vci.domain.dto.DeferredCredentialRequest;
 import es.in2.oid4vci.domain.dto.DeferredCredentialResponse;
 import es.in2.oid4vci.domain.services.DeferredCredentialService;
@@ -33,8 +33,8 @@ public class DeferredCredentialServiceImpl implements DeferredCredentialService 
 
         // Simulación de notificación única
         String notificationId = UUID.randomUUID().toString();
-        List<CredentialImmediateResponse.Credential> credentialObjects = credentials.stream()
-                .map(CredentialImmediateResponse.Credential::new)
+        List<CredentialResponse.Credential> credentialObjects = credentials.stream()
+                .map(CredentialResponse.Credential::new)
                 .toList();
 
         // Eliminamos la transacción una vez completada

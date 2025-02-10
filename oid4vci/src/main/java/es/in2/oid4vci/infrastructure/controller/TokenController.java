@@ -1,6 +1,6 @@
 package es.in2.oid4vci.infrastructure.controller;
 
-import es.in2.oid4vci.domain.dto.TokenErrorResponse;
+import es.in2.oid4vci.domain.exception.TokenErrorResponse;
 import es.in2.oid4vci.domain.dto.TokenRequest;
 import es.in2.oid4vci.domain.dto.TokenResponse;
 import es.in2.oid4vci.domain.services.TokenService;
