@@ -1,4 +1,4 @@
-package es.in2.issuer.infrastructure.configs;
+package es.in2.issuer.infrastructure;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -7,12 +7,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.concurrent.Callable;
 
-/**
- * Service to manage global metrics for the backend. This service is used to manage metrics that are
- * not related to a specific submodule of the backend.
- */
 @Component
-public class GlobalMetricsService {
+public class GlobalCustomMetricsComponent {
 
     // Counter to track the total number of requests processed by the system
     private final Counter totalRequestCounter;
@@ -23,7 +19,7 @@ public class GlobalMetricsService {
     // Timer to track the latencies of HTTP requests
     private final Timer requestLatencyTimer;
 
-    public GlobalMetricsService(MeterRegistry meterRegistry) {
+    public GlobalCustomMetricsComponent(MeterRegistry meterRegistry) {
         String module = "module";
         String global = "global";
 
