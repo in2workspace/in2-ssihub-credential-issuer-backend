@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: Credential Issuer Backend
+
+server:
+  port: 8080
+
+
