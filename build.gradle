@@ -25,6 +25,8 @@ sonar {
 		property "sonar.projectKey", "in2workspace_in2-ssihub-issuer-backend"
 		property "sonar.organization", "in2workspace"
 		property "sonar.host.url", "https://sonarcloud.io"
+		// Where the Jacoco report is located to be consumed by SonarQube
+		property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/jacocoRootReport.xml"
 	}
 }
 
@@ -140,35 +142,58 @@ subprojects {
 
 tasks.named('test') {
 	useJUnitPlatform()
-	finalizedBy(tasks.jacocoRootReport)
+	finalizedBy(tasks.jacocoTestReport)
 }
 
 tasks.register('jacocoRootReport', JacocoReport) {
 	dependsOn subprojects.tasks.test
 
+	// Add the execution data from the subprojects
 	executionData.from files(subprojects.findAll {
 		it.layout.buildDirectory.file("jacoco/test.exec").get().asFile.exists()
 	}.collect {
 		it.layout.buildDirectory.file("jacoco/test.exec").get().asFile
 	})
 
-	additionalSourceDirs.from files(subprojects.sourceSets.main.allSource.srcDirs)
-	sourceDirectories.from files(subprojects.sourceSets.main.allSource.srcDirs)
-	classDirectories.from files(subprojects.sourceSets.main.output)
+	// Add the execution data from the root project
+	def rootExec = layout.buildDirectory.file("jacoco/test.exec").get().asFile
+	if (rootExec.exists()) {
+		executionData.from rootExec
+	}
+
+	// Add the source directories from the subprojects
+	additionalSourceDirs.from files(
+			subprojects.sourceSets.main.allSource.srcDirs,
+			layout.projectDirectory.dir("src/main/java") // Código del módulo root
+	)
+
+	sourceDirectories.from files(
+			subprojects.sourceSets.main.allSource.srcDirs,
+			layout.projectDirectory.dir("src/main/java") // Código del módulo root
+	)
+
+	classDirectories.from files(
+			subprojects.sourceSets.main.output,
+			layout.buildDirectory.dir("classes/java/main") // Clases compiladas del root
+	)
 
 	reports {
 		xml.required.set(true)
+		// This is the report that will be uploaded to SonarQube
+		xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/jacocoRootReport.xml"))
 		html.required.set(true)
+		html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco/jacocoRootReport"))
 		csv.required.set(false)
-		html.outputLocation.set(layout.buildDirectory.dir("jacocoRootReport"))
 	}
 
+	// Exclude classes from the report
 	classDirectories.setFrom(files(classDirectories.files.collect {
 		fileTree(dir: it, exclude: [
 				"**/Application.class",
 		])
 	}))
 }
+
 
 tasks.register('printVersion') {
 	doLast {
