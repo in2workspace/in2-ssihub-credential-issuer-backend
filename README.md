@@ -19,3 +19,27 @@
 </div>
 
 # Introduction
+
+## Run the application
+
+To run the application, execute:
+
+```bash
+docker-compose up --build -d
+```
+
+
+## Metrics
+
+### Global Counters
+The Application defines two counters: one for the total processed requests and another for the total errors. 
+This allows you to monitor the traffic volume and the failure rate in a centralized way.
+
+### Latency Timer
+A Timer is used to measure the global latency of the requests. 
+This helps to detect possible bottlenecks in the processing.
+
+### Tags
+A tag ("module", "global") is used to identify that these metrics correspond to the global view of the system. 
+You can expand the use of tags if you need to further segment the information 
+(for example, by environment, region, etc.).

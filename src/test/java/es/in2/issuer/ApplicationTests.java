@@ -1,10 +1,10 @@
-package es.in2.issuer.backend;
+package es.in2.issuer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CredentialIssuerBackendApplicationTests {
+class ApplicationTests {
 
 	@Test
 	void contextLoads() {

@@ -1,8 +1,48 @@
 spring:
   application:
     name: Credential Issuer Backend
+  security:
+    # This is temporary and should be changed to a more secure value
+    user:
+      name: admin
+      password: admin
 
 server:
   port: 8080
 
+logging:
+  level:
+    # Sets logging level for Spring Security
+    org.springframework.security: INFO
+    # Sets logging level for web filters
+    org.springframework.web: INFO
+
+management:
+  endpoints:
+    # Disables all management endpoints by default
+    web:
+      exposure:
+        # Specifies the enabled management endpoints
+        include: health, prometheus
+        # Sets the base path for management endpoints
+      base-path: /
+      path-mapping:
+        # Maps the health endpoint to /health
+        health: health
+        # Maps the Prometheus metrics endpoint to /prometheus
+        prometheus: prometheus
+    # Configures access to the management endpoints
+    access:
+      default: read_only
+  endpoint:
+    health:
+      # Shows details for the health endpoint
+      show-details: always
+    prometheus:
+        # Enables Prometheus metrics endpoint
+      access: read_only
+  metrics:
+    tags:
+      # Adds application name as a tag to metrics
+      application: ${spring.application.name}
 
