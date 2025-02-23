@@ -1,18 +1,17 @@
 # Step 1: Prepare dependencies
-FROM gradle:8.12.1-jdk21 AS dependencies
+FROM gradle:8.12.1-jdk21 AS temp_build
+ARG SKIP_TESTS=false
 WORKDIR /app
-COPY gradlew .
-COPY build.gradle api/settings.gradle ./
-COPY gradle gradle
-RUN gradle dependencies --no-daemon;
+COPY build.gradle settings.gradle /app/
+COPY src /app/src
+COPY gradle /app/gradle
+RUN if [ "$SKIP_TESTS" = "true" ]; then \
+    gradle build --no-daemon -x test; \
+  else \
+    gradle build --no-daemon; \
+  fi
 
-# Step 1
-FROM docker.io/gradle:8.12.1-jdk21 AS temp_build
-WORKDIR /app
-COPY . .
-RUN gradle clean bootJar --no-daemon;
-
-# Step 3: Run
+# Step 2: Run
 FROM bellsoft/liberica-openjdk-alpine-musl:21
 RUN addgroup -S nonroot \
     && adduser -S nonroot -G nonroot

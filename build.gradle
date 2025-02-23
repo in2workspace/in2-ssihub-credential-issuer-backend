@@ -25,14 +25,7 @@ sonar {
 		property "sonar.projectKey", "in2workspace_in2-ssihub-issuer-backend"
 		property "sonar.organization", "in2workspace"
 		property "sonar.host.url", "https://sonarcloud.io"
-		// Where the Jacoco report is located to be consumed by SonarQube
-		property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/jacocoRootReport.xml"
 	}
-}
-
-bootJar {
-	// Indicate which class is the executable class of the application
-	mainClass = 'es.in2.issuer.Application'
 }
 
 configurations {
@@ -43,10 +36,6 @@ configurations {
 
 repositories {
 	mavenCentral()
-}
-
-ext {
-	springBootVersion = '3.4.3'
 }
 
 dependencies {
@@ -69,131 +58,28 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	// Modules
-	implementation project(':auth-server')
-	implementation project(':credential-management')
-	implementation project(':oid4vci')
-	implementation project(':schema')
-	implementation project(':signature')
-}
-
-subprojects {
-	apply plugin: 'java'
-	apply plugin: 'io.spring.dependency-management'
-	apply plugin: 'jacoco'
-
-	group = project.group
-	version = project.version
-
-	java {
-		toolchain {
-			languageVersion = JavaLanguageVersion.of(21)
-		}
-	}
-
-	jacoco {
-		toolVersion = '0.8.12'
-	}
-
-	repositories {
-		mavenCentral()
-	}
-
-	dependencyManagement {
-		imports {
-			// use the same spring boot version as in the root
-			mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
-		}
-	}
-
-	dependencies {
-		// Spring Boot
-		implementation 'org.springframework.boot:spring-boot-starter-web'
-		// DevTools
-		compileOnly 'org.projectlombok:lombok:1.18.36'
-		annotationProcessor 'org.projectlombok:lombok:1.18.36'
-		// Testing
-		testImplementation 'org.springframework.boot:spring-boot-starter-test'
-		testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	}
-
-	tasks.named('test') {
-		useJUnitPlatform()
-		finalizedBy(tasks.jacocoTestReport)
-	}
-
-	if (!tasks.names.contains("jacocoTestReport")) {
-		tasks.register('jacocoTestReport', JacocoReport) {
-			dependsOn(tasks.test)
-
-			reports {
-				xml.required.set(true)
-				html.required.set(true)
-				csv.required.set(false)
-			}
-
-			classDirectories.setFrom(files(classDirectories.files.collect {
-				fileTree(dir: it, exclude: [])
-			}))
-		}
-	}
-
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
-	finalizedBy(tasks.jacocoTestReport)
+	finalizedBy(tasks.named('jacocoTestReport'))
 }
 
-tasks.register('jacocoRootReport', JacocoReport) {
-	dependsOn subprojects.tasks.test
-
-	// Add the execution data from the subprojects
-	executionData.from files(subprojects.findAll {
-		it.layout.buildDirectory.file("jacoco/test.exec").get().asFile.exists()
-	}.collect {
-		it.layout.buildDirectory.file("jacoco/test.exec").get().asFile
-	})
-
-	// Add the execution data from the root project
-	def rootExec = layout.buildDirectory.file("jacoco/test.exec").get().asFile
-	if (rootExec.exists()) {
-		executionData.from rootExec
-	}
-
-	// Add the source directories from the subprojects
-	additionalSourceDirs.from files(
-			subprojects.sourceSets.main.allSource.srcDirs,
-			layout.projectDirectory.dir("src/main/java") // Código del módulo root
-	)
-
-	sourceDirectories.from files(
-			subprojects.sourceSets.main.allSource.srcDirs,
-			layout.projectDirectory.dir("src/main/java") // Código del módulo root
-	)
-
-	classDirectories.from files(
-			subprojects.sourceSets.main.output,
-			layout.buildDirectory.dir("classes/java/main") // Clases compiladas del root
-	)
+tasks.jacocoTestReport {
+	dependsOn(tasks.test)
 
 	reports {
 		xml.required.set(true)
-		// This is the report that will be uploaded to SonarQube
-		xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/jacocoRootReport.xml"))
-		html.required.set(true)
-		html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco/jacocoRootReport"))
 		csv.required.set(false)
+		html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
 	}
 
-	// Exclude classes from the report
 	classDirectories.setFrom(files(classDirectories.files.collect {
 		fileTree(dir: it, exclude: [
-				"**/Application.class",
+				"**/Application.class"
 		])
 	}))
 }
-
 
 tasks.register('printVersion') {
 	doLast {
